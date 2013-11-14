@@ -5,13 +5,15 @@
     <string name="action_settings">Settings</string>
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
+    <string name="button_save">Save</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_display_message">My Message</string>
-    
     <string name="action_search">Find</string>
     <string name="action_close">Close</string>
     <string name="action_new">New</string>
     <string name="action_open">Open</string>
     <string name="action_save">Save</string>
+    <string name="title_activity_save">SaveActivity</string>
+    <string name="file_name">File name</string>
 
 </resources>

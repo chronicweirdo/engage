@@ -30,6 +30,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.chronicweirdo.engage.MainActivity" />
         </activity>
+        <activity
+            android:name="com.chronicweirdo.engage.SaveActivity"
+            android:label="@string/title_activity_save"
+            android:parentActivityName="com.chronicweirdo.engage.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.chronicweirdo.engage.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

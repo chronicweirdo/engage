@@ -59,7 +59,11 @@ public class MainActivity extends Activity {
 	}
 	
 	private void saveFile() {
-		
+		Intent intent = new Intent(this, SaveActivity.class);
+		EditText editText = (EditText) findViewById(R.id.edit_message);
+		String message = editText.getText().toString();
+		intent.putExtra(EXTRA_MESSAGE, message);
+		startActivity(intent);
 	}
 	
 	private void closeFile() {
