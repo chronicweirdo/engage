@@ -69,10 +69,10 @@ public class SaveActivity extends Activity {
 
 		// save to disk
 		// File file = new File(getFilesDir(), fileName);
-		File file = new File(Environment.getRootDirectory(), fileName);
+		File file = new File(Environment.getExternalStorageDirectory(), fileName);
+		//File file = new File(fileName);
 		try {
-			FileOutputStream outputStream = openFileOutput(file.getAbsolutePath(),
-					Context.MODE_PRIVATE);
+			FileOutputStream outputStream = new FileOutputStream(file);
 			outputStream.write(text.getBytes());
 			outputStream.close();
 		} catch (Exception e) {
