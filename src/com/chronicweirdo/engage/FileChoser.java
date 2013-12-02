@@ -8,7 +8,11 @@ import java.util.List;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.Toast;
 
 public class FileChoser extends ListActivity {
 
@@ -45,12 +49,32 @@ public class FileChoser extends ListActivity {
 		
 		dir.addAll(fls);
 		
-		if (!f.getName().equalsIgnoreCase("sdcard")) {
+		Log.i("#####", "f path: " + f.getAbsolutePath());
+		Log.i("#####", "root path: " + Environment.getRootDirectory().getAbsolutePath());
+		if (!f.getAbsolutePath().equalsIgnoreCase("/")) {
 			dir.add(0, new Option("..", "Parent Directory", f.getParent()));
 		}
 		
 		adapter = new FileArrayAdapter(FileChoser.this, R.layout.file_view, dir);
 		this.setListAdapter(adapter);
+	}
+	
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		Option o = adapter.getItem(position);
+		if (o.getData().equalsIgnoreCase("folder") ||
+				o.getData().equalsIgnoreCase("parent directory")) {
+			currentDir = new File(o.getPath());
+			fill(currentDir);
+			Toast.makeText(this, "Current: " + o.getPath(), Toast.LENGTH_SHORT).show();
+		} else {
+			onFileClick(o);
+		}
+	}
+	
+	private void onFileClick(Option o) {
+		Toast.makeText(this, "File Clicked: " + o.getName(), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
