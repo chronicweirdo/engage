@@ -6,6 +6,7 @@
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
     <string name="button_save">Save</string>
+    <string name="button_browse">Browse</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_display_message">My Message</string>
     <string name="action_search">Find</string>
@@ -15,5 +16,6 @@
     <string name="action_save">Save</string>
     <string name="title_activity_save">SaveActivity</string>
     <string name="file_name">File name</string>
+    <string name="title_activity_file_choser">FileChoser</string>
 
 </resources>

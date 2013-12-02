@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -60,6 +59,11 @@ public class SaveActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void openBrowser(View view) {
+		Intent intent = new Intent(this, FileChoser.class);
+		startActivity(intent);
 	}
 
 	public void save(View view) {
