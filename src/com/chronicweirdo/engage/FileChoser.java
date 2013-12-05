@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -23,6 +24,8 @@ public class FileChoser extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Intent intent = getIntent();
+		Log.i("#####", intent.getExtras().get("parentParam1").toString());
 		//setContentView(R.layout.activity_file_choser);
 		currentDir = Environment.getExternalStorageDirectory();
 		fill(currentDir);
@@ -75,6 +78,10 @@ public class FileChoser extends ListActivity {
 	
 	private void onFileClick(Option o) {
 		Toast.makeText(this, "File Clicked: " + o.getName(), Toast.LENGTH_SHORT).show();
+		Intent resultIntent = new Intent();
+		resultIntent.putExtra("selectedFile", o.getPath());
+		setResult(RESULT_OK, resultIntent);
+		finish();
 	}
 
 	@Override

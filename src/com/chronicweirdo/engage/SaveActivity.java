@@ -63,7 +63,21 @@ public class SaveActivity extends Activity {
 	
 	public void openBrowser(View view) {
 		Intent intent = new Intent(this, FileChoser.class);
-		startActivity(intent);
+		intent.putExtra("parentParam1", "a parameter from parent activity");
+		int requestCode = 1; // some random request code
+		startActivityForResult(intent, requestCode);
+	}
+	
+	
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == RESULT_OK && requestCode == 1) {
+			String path = data.getStringExtra("selectedFile");
+			EditText editText = (EditText) findViewById(R.id.file_name);
+			editText.setText(path);
+		}
 	}
 
 	public void save(View view) {
@@ -73,7 +87,7 @@ public class SaveActivity extends Activity {
 
 		// save to disk
 		// File file = new File(getFilesDir(), fileName);
-		File file = new File(Environment.getExternalStorageDirectory(), fileName);
+		File file = new File(/*Environment.getExternalStorageDirectory(), */fileName);
 		//File file = new File(fileName);
 		try {
 			FileOutputStream outputStream = new FileOutputStream(file);
