@@ -40,7 +40,7 @@ public class FileChoser extends Activity implements OnItemClickListener {
 		Intent intent = getIntent();
 		
 		// allow folder selection
-		if (intent.getExtras().containsKey(ALLOW_FOLDER_SELECTION)) {
+		if (intent.getExtras() != null && intent.getExtras().containsKey(ALLOW_FOLDER_SELECTION)) {
 			this.allowFolderSelection = (Boolean) intent.getExtras().get(ALLOW_FOLDER_SELECTION);
 		}
 		
@@ -51,7 +51,7 @@ public class FileChoser extends Activity implements OnItemClickListener {
 		}
 		
 		// starting location
-		if (intent.getExtras().containsKey(LOCATION)) {
+		if (intent.getExtras() != null && intent.getExtras().containsKey(LOCATION)) {
 			String location = (String) intent.getExtras().get(LOCATION);
 			current = new File(location);
 		}

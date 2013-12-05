@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +18,7 @@ import android.widget.EditText;
 
 public class SaveActivity extends Activity {
 	
-	
+	public static final String PATH = "path";
 
 	private String text;
 
@@ -65,8 +68,8 @@ public class SaveActivity extends Activity {
 	
 	public void openBrowser(View view) {
 		Intent intent = new Intent(this, FileChoser.class);
-		intent.putExtra(FileChoser.ALLOW_FOLDER_SELECTION, false);
-		intent.putExtra(FileChoser.LOCATION, "/");
+		//intent.putExtra(FileChoser.ALLOW_FOLDER_SELECTION, false);
+		//intent.putExtra(FileChoser.LOCATION, "/");
 		int requestCode = 1; // some random request code
 		startActivityForResult(intent, requestCode);
 	}
@@ -82,23 +85,72 @@ public class SaveActivity extends Activity {
 			editText.setText(path);
 		}
 	}
+	
+	private void result(String path) {
+		Intent r = new Intent();
+		r.putExtra(PATH, path);
+		setResult(RESULT_OK, r);
+		finish();
+	}
 
 	public void save(View view) {
-		// Intent intent = new Intent(this, DisplayMessageActivity.class);
+		// get file name
 		EditText editText = (EditText) findViewById(R.id.file_name);
 		String fileName = editText.getText().toString();
-
-		// save to disk
-		// File file = new File(getFilesDir(), fileName);
-		File file = new File(/*Environment.getExternalStorageDirectory(), */fileName);
-		//File file = new File(fileName);
+		
+		// verify it is a file (or does not exist)
+		final File file = new File(fileName);
+		if (file.isDirectory()) {
+			Log.i("#####", "this is a folder, dude!");
+			Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("That's a folder!");
+			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					Log.i("#####", "ok clicked");
+				}
+			});
+			AlertDialog dialog = builder.create();
+			dialog.show();
+			return;
+		}
+		
+		// ask for overwrite
+		if (file.exists()) {
+			Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("Overwrite?");
+			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					Log.i("#####", "cancel clicked");
+				}
+			});
+			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					Log.i("#####", "ok clicked");
+					save(file);
+				}
+			});
+			AlertDialog dialog = builder.create();
+			dialog.show();
+			return;
+		}
+		
+		// a new file
+		save(file);
+	}
+	
+	private void save(File file) {
 		try {
 			FileOutputStream outputStream = new FileOutputStream(file);
 			outputStream.write(text.getBytes());
 			outputStream.close();
+			result(file.getAbsolutePath());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 }
