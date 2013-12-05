@@ -43,14 +43,15 @@ public class FileArrayAdapter extends ArrayAdapter<Option> {
 			//TextView t2 = (TextView) v.findViewById(R.id.TextView02);
 			
 			if (iv != null) {
-				if (o.getData().equalsIgnoreCase("folder")) {
+				if (o.getType() == Option.Type.FOLDER) {
 					iv.setImageResource(R.drawable.ic_folder);
-				} else {
+				} else if (o.getType() == Option.Type.FILE){
 					iv.setImageResource(R.drawable.ic_file);
+				} else if (o.getType() == Option.Type.RETURN) {
+					iv.setImageResource(R.drawable.ic_parent);
 				}
 			}
 			if (t1 != null) t1.setText(o.getName());
-			//if (t2 != null) t2.setText(o.getData());
 		}
 		return v;
 	}
