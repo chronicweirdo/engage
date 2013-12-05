@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class FileArrayAdapter extends ArrayAdapter<Option> {
@@ -37,11 +38,19 @@ public class FileArrayAdapter extends ArrayAdapter<Option> {
 		}
 		final Option o = items.get(position);
 		if (o != null) {
+			ImageView iv = (ImageView) v.findViewById(R.id.fileIcon);
 			TextView t1 = (TextView) v.findViewById(R.id.TextView01);
-			TextView t2 = (TextView) v.findViewById(R.id.TextView02);
+			//TextView t2 = (TextView) v.findViewById(R.id.TextView02);
 			
+			if (iv != null) {
+				if (o.getData().equalsIgnoreCase("folder")) {
+					iv.setImageResource(R.drawable.ic_folder);
+				} else {
+					iv.setImageResource(R.drawable.ic_file);
+				}
+			}
 			if (t1 != null) t1.setText(o.getName());
-			if (t2 != null) t2.setText(o.getData());
+			//if (t2 != null) t2.setText(o.getData());
 		}
 		return v;
 	}

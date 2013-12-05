@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 public class FileChoser extends ListActivity {
 
-	private File currentDir;
+	private File current;
 	
 	private FileArrayAdapter adapter;
 	
@@ -27,8 +27,8 @@ public class FileChoser extends ListActivity {
 		Intent intent = getIntent();
 		Log.i("#####", intent.getExtras().get("parentParam1").toString());
 		//setContentView(R.layout.activity_file_choser);
-		currentDir = Environment.getExternalStorageDirectory();
-		fill(currentDir);
+		current = Environment.getExternalStorageDirectory();
+		fill(current);
 	}
 	
 	private void fill(File f) {
@@ -68,8 +68,8 @@ public class FileChoser extends ListActivity {
 		Option o = adapter.getItem(position);
 		if (o.getData().equalsIgnoreCase("folder") ||
 				o.getData().equalsIgnoreCase("parent directory")) {
-			currentDir = new File(o.getPath());
-			fill(currentDir);
+			current = new File(o.getPath());
+			fill(current);
 			Toast.makeText(this, "Current: " + o.getPath(), Toast.LENGTH_SHORT).show();
 		} else {
 			onFileClick(o);
