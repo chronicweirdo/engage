@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.EditText;
 
 public class SaveActivity extends Activity {
+	
+	
 
 	private String text;
 
@@ -63,7 +65,8 @@ public class SaveActivity extends Activity {
 	
 	public void openBrowser(View view) {
 		Intent intent = new Intent(this, FileChoser.class);
-		intent.putExtra("parentParam1", "a parameter from parent activity");
+		intent.putExtra(FileChoser.ALLOW_FOLDER_SELECTION, false);
+		intent.putExtra(FileChoser.LOCATION, "/");
 		int requestCode = 1; // some random request code
 		startActivityForResult(intent, requestCode);
 	}
@@ -74,7 +77,7 @@ public class SaveActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK && requestCode == 1) {
-			String path = data.getStringExtra("selectedFile");
+			String path = data.getStringExtra(FileChoser.PATH);
 			EditText editText = (EditText) findViewById(R.id.file_name);
 			editText.setText(path);
 		}

@@ -14,10 +14,15 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 public class FileChoser extends Activity implements OnItemClickListener {
+	
+	public static final String ALLOW_FOLDER_SELECTION = "allowFolderSelection";
+	public static final String LOCATION = "location";
+	public static final String PATH = "path";
 
 	private File current;
 	
@@ -28,12 +33,47 @@ public class FileChoser extends Activity implements OnItemClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Intent intent = getIntent();
-		// TODO: check if we get a predefined location and set it as current folder
-		// Log.i("#####", intent.getExtras().get("parentParam1").toString());
 		setContentView(R.layout.activity_file_choser);
-		current = Environment.getExternalStorageDirectory();
+		
+		
+		// check input parameters
+		Intent intent = getIntent();
+		
+		// allow folder selection
+		if (intent.getExtras().containsKey(ALLOW_FOLDER_SELECTION)) {
+			this.allowFolderSelection = (Boolean) intent.getExtras().get(ALLOW_FOLDER_SELECTION);
+		}
+		
+		if (this.allowFolderSelection) {
+			getSelectButton().setVisibility(View.VISIBLE);
+		} else {
+			getSelectButton().setVisibility(View.GONE);
+		}
+		
+		// starting location
+		if (intent.getExtras().containsKey(LOCATION)) {
+			String location = (String) intent.getExtras().get(LOCATION);
+			current = new File(location);
+		}
+		
+		if (current == null || current.exists() == false) {
+			current = Environment.getExternalStorageDirectory();
+		}
+		
+		// set file list listener
+		getFileList().setOnItemClickListener(this);
+		
 		fill(current);
+	}
+	
+	private Button getSelectButton() {
+		Button button = ((Button) this.findViewById(R.id.buttonSelect));
+		return button;
+	}
+	
+	private ListView getFileList() {
+		ListView listView = ((ListView) this.findViewById(R.id.fileList));
+		return listView;
 	}
 	
 	private void fill(File f) {
@@ -66,9 +106,7 @@ public class FileChoser extends Activity implements OnItemClickListener {
 		
 		// build list
 		adapter = new FileArrayAdapter(FileChoser.this, R.layout.file_view, dir);
-		ListView listView = ((ListView) this.findViewById(R.id.fileList));
-		listView.setAdapter(adapter);
-		listView.setOnItemClickListener(this);
+		getFileList().setAdapter(adapter);
 	}
 	
 	@Override
@@ -78,20 +116,19 @@ public class FileChoser extends Activity implements OnItemClickListener {
 				o.getType() == Option.Type.RETURN) {
 			current = new File(o.getPath());
 			fill(current);
-			Toast.makeText(this, "Current: " + o.getPath(), Toast.LENGTH_SHORT).show();
+			//Toast.makeText(this, "Current: " + o.getPath(), Toast.LENGTH_SHORT).show();
 		} else {
-			onFileClick(o);
+			result(o.getPath());
 		}
 	}
 	
-	private void onFileClick(Option o) {
-		Toast.makeText(this, "File Clicked: " + o.getName(), Toast.LENGTH_SHORT).show();
+	private void result(String path) {
 		Intent resultIntent = new Intent();
-		resultIntent.putExtra("selectedFile", o.getPath());
+		resultIntent.putExtra(PATH, path);
 		setResult(RESULT_OK, resultIntent);
 		finish();
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -100,10 +137,7 @@ public class FileChoser extends Activity implements OnItemClickListener {
 	}
 
 	public void select(View view) {
-		Intent resultIntent = new Intent();
-		resultIntent.putExtra("selectedFile", current.getAbsolutePath());
-		setResult(RESULT_OK, resultIntent);
-		finish();
+		result(current.getAbsolutePath());
 	}
 
 }
