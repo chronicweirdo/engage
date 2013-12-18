@@ -1,8 +1,13 @@
 package com.chronicweirdo.engage;
 
+import java.io.File;
+
+
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -71,7 +76,24 @@ public class MainActivity extends Activity {
 	}
 	
 	private void newFile() {
+		Uri uri = Uri.fromFile(new File("/storage/sdcard0/mydata/cumparaturi.txt"));
+		Intent openIntent = new Intent(Intent.ACTION_EDIT, uri);
+		//openIntent.setAction(Intent.ACTION_EDIT);
+		openIntent.setType("text/plain");
 		
+		//openIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		//openIntent.addCategory(Intent.CATEGORY_OPENABLE);
+		//openIntent.addCategory(Intent.CATEGORY_BROWSABLE);
+		//openIntent.addCategory(Intent.CATEGORY_DEFAULT);
+		//openIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+		Log.w(":::: ", uri.toString());
+		//openIntent.setData(uri);
+		startActivity(openIntent);
+		
+		Intent intent = new Intent(Intent.ACTION_VIEW,
+				/*Uri.parse("http://www.ebookfrenzy.com")*/ uri);
+    	
+    	//startActivity(intent);
 	}
 	
 	private void openSearch() {
