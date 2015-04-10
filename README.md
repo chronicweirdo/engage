@@ -1,4 +1,4 @@
 engage
 ======
 
-Android repo that will boldly going where no one has gone before
+Android repo that will boldly go where no one has gone before
